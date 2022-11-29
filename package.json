@@ -4,9 +4,10 @@
   "description": "remote-signal server and client cli",
   "type": "module",
   "bin": {
-    "remocons-redis": "./bin/remote-server-redis.js",
+    "remote-server-redis": "./bin/remote-server-redis.js",
     "remote-server": "./bin/remote-server.js",
     "remote": "./bin/remote.js",
+    "remocons-redis": "./bin/remote-server-redis.js",
     "remocons": "./bin/remote-server.js",
     "remocon": "./bin/remote.js"
   },
@@ -23,6 +24,6 @@
     "eventemitter3": "^4.0.7",
     "meta-buffer-pack": "^1.3.0",
     "redis": "^4.5.0",
-    "remote-signal": "^0.2.0"
+    "remote-signal": "^0.2.1"
   }
 }
