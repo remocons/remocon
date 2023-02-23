@@ -5,7 +5,7 @@ import { AuthRedis } from '../src/AuthRedis.js';
 import { program } from 'commander'
 let authManager;
 
-const version = '0.7.0'
+const version = '0.8.0'
 program
   .version(version)
   .usage('[options] (--listen <port> )')
