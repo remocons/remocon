@@ -10,6 +10,7 @@ program
   .version(version)
   .usage('[options] (--listen <port> )')
   .option('-l, --listen <port>', 'listen on port (start WebSocket Server)')
+  .option('-L, --listen-congport <port>', 'listen on cong port (start CongSocket Server)')
   .option('-t, --timeout <milliseconds>', 'ping period & timeout')
   .option('-q, --quota', 'use Quota')
   .option('-m, --metric <type>', 'show metric <number> 1:oneline, 2: traffic 3:echo')
