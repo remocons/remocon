@@ -1,6 +1,5 @@
 # remocon ( remote-signal console )
 
-- ``In development!!``
 - CLI: remote-signal server and client.
 - It use [remote-signal](https://www.npmjs.com/package/remote-signal) package.
 
@@ -18,10 +17,10 @@
 > remote-server // or  use 'remocons'  alias name
 // start server with default option.
 // open port 7777 with websocket. 
-// open port 7778 with congpacket/tcp. 
+// open port 8888 with congpacket/tcp. 
 
 
-> remocons -l 8888 
+> remocons -l 5555 
 // you can specify listen port number
 
 ```
@@ -38,15 +37,14 @@
 // define websocket url and port number.
 // support ws or wss(TLS).
 
-> remote -c tcp://localhost:7778
-// connect to remote-server with congpacket/tcp protocol.
-
 ```
 
 ## remote-signal commands
 
 - subscribe('tag')
-- publish('tag', message )  // alias. signal
+- publish('tag', message ) 
+- signal('tag', message )  //same with publish
+//  signal is alias of publish.
 - ...
 
 ## tutorial 
@@ -76,7 +74,9 @@
 >> CID_ACK:  JjSim4JT   // connected. receive cid.
 
 > .signal channel_name some_message   // multicast.
-> .signal qosr7B0Z direct_message  // unicast to A.
+> .signal qosr7B0Z@ direct_message  // unicast to A.
+// IMPORTANT. 
+// unicast signal tag must include '@' charactor.  
 ```
 
 ### authentication

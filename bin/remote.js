@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { Remote, RemoteCongTCP, ENC_MODE , WS_PORT  } from 'remote-signal'
+import { Remote, RemoteCongSocket, ENC_MODE , serverOption  } from 'remote-signal'
 import { EventEmitter } from 'events'
 import readline from 'readline'
 import tty from 'tty'
@@ -93,19 +93,14 @@ function noop () {}
 const version = '0.2.0'
 program
   .version(version)
-  .usage('[options] (--listen <port> )')
-  .option('-l, --listen <port>', 'listen on port (start WebSocket Server)')
+  .usage('[options] (--connect <url> )')
   .option('-t, --timeout <milliseconds>', 'ping period & timeout')
-  .option('-d, --data-base <file>', 'load user data from file')
-  .option('-m, --metric <type>', 'show metric <number> 1:traffic, 2:echo')
   .option('-s, --show-message <none|message|frame>', 'show receive message. ')
-  .option('-a, --admin-channel <channelName>', 'admin channel name')
-  .option('-c, --connect <url>', 'connect to a WebSocket server')
+  .option('-c, --connect <url>', 'connect to a server')
   .option('-i, --id <id>', 'userId')
   .option('-k, --key <key>', 'userKey')
   .option('-j, --join-channel <channelName>', 'join to channel')
   .option('-n, --nick <nickName>', 'use nick name')
-  .option('-p, --ping', 'show ping pong')
   .parse(process.argv)
 
 const programOptions = program.opts()
@@ -116,10 +111,10 @@ console.log( programOptions )
 
 
 if ( !programOptions.connect) {  
-  programOptions.connect = 'localhost:'+ WS_PORT
+  programOptions.connect = 'localhost:'+ serverOption.port;
 }
 
-if (programOptions.connect) {  
+
   const wsConsole = new Console()
 
   let connectUrl = programOptions.connect
@@ -128,9 +123,9 @@ if (programOptions.connect) {
   let remocon;
   let defaultChannel = '#screen'
 
-  if( connectUrl.indexOf('tcp') === 0 ){
+  if( connectUrl.indexOf('cong') === 0 ){
     //use TCP connection
-     remocon = new RemoteCongTCP(connectUrl)
+     remocon = new RemoteCongSocket(connectUrl)
   }else{ // ws connection
     if (!connectUrl.match(/\w+:\/\/.*$/i)) {
       connectUrl = `ws://${connectUrl}`
@@ -165,13 +160,9 @@ if (programOptions.connect) {
   })
 
   remocon.on('ready', () => {
-    // 
-    // if (programOptions.id && programOptions.key && !remocon.boho.isAuthorized) {
-    //   remocon.login( programOptions.id ,programOptions.key )
-    // }
     wsConsole.print(
       Console.Types.Control,
-      'Remote::Ready (press CTRL+C to quit)',
+      `ready:  cid: ${remocon.cid}`,
       Console.Colors.Green )
   })
 
@@ -183,7 +174,20 @@ if (programOptions.connect) {
   remocon.on('authorized', () => {
     wsConsole.print( 
       Console.Types.Control, 
-      `AUTHORIZED. TLS: ${remocon.TLS}`,
+      `Boho authorized. TLS: ${remocon.TLS}`,
+       Console.Colors.Yellow )
+  })
+  
+  remocon.on('auth_fail', () => {
+    wsConsole.print( 
+      Console.Types.Control, 
+      `Boho auth_fail.`,
+       Console.Colors.Yellow )
+  })
+  remocon.on('over_size', () => {
+    wsConsole.print( 
+      Console.Types.Control, 
+      `OVER_SIZE: your signalSize limit is: ${ remocon.quota.signalSize }`,
        Console.Colors.Yellow )
   })
 
@@ -261,7 +265,23 @@ if (programOptions.connect) {
           break;
 
         case 'id':
-          console.log(`cid: ${ remocon.cid}  ssid: ${remocon.ssid }` )
+          console.log(`cid: ${ remocon.cid} level: ${remocon.level}` )
+          break;
+
+        case 'sudo':
+          toks.shift()
+          console.log('sudo toks', toks )
+          remocon.admin_request( ...toks ).then( result=>{
+            console.log('>> sudo response:', result )
+          }).catch(err=>{
+            console.log('sudo call err',err)
+          })
+
+        break;
+
+
+        case 'quota':
+          console.log(`quota: ${ JSON.stringify(remocon.quota)}` )
           break;
 
         case 'ch':
@@ -288,7 +308,7 @@ if (programOptions.connect) {
         case 'sig':
         case 'signal':
             toks.shift()
-            console.log('signal toks', toks )
+            // console.log('signal toks', toks )
             remocon.signal( ...toks )
           break;
 
@@ -296,7 +316,7 @@ if (programOptions.connect) {
             toks.shift()
             let to = toks[0]
             let size = parseInt( toks[1])
-            console.log('signal to, buffer size:', to, size)
+            console.log(`signal tag: ${to} size: ${size}`)
             remocon.signal( to, new Uint8Array(size ))
           break;
 
@@ -332,15 +352,11 @@ if (programOptions.connect) {
             remocon.signal( toks[1] + "@ping", remocon.cid )
           break;
         case 'ping':
-          if(toks[1]){
-            remocon.ws?.ping(toks[1])
-          }else{
-            remocon.ws?.ping(noop)
-          }
+            remocon.ping()
           break;
 
         case 'pong':
-          remocon.ws?.pong(noop)
+          remocon.pong()
           break
 
         case 'close': 
@@ -365,12 +381,14 @@ if (programOptions.connect) {
         case 'hide':
             wsConsole.showIncommingMessage = false
           break;
-
+        case 'quit':
+        case 'exit':
+            process.exit();
         default:
             // remocon.send( data )
           wsConsole.print(
             Console.Types.Error,
-            'command list: .sub .pub .sig .sig_bin .ping .pong .echo .iam .open .connect .close .hex .frame .pub .sub',
+            'command list: .sub .pub .sig .sig_bin .ping .pong .echo .iam .open .connect .close .hex .quit .exit',
             Console.Colors.Yellow
           )
       }
@@ -383,9 +401,6 @@ if (programOptions.connect) {
 
 
 
-} else {
-  program.help()
-}
 
 
 
