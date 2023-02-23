@@ -5,7 +5,7 @@ import { AuthRedis } from '../src/AuthRedis.js';
 import { program } from 'commander'
 let authManager;
 
-const version = '0.3.0'
+const version = '0.6.0'
 program
   .version(version)
   .usage('[options] (--listen <port> )')
@@ -23,7 +23,11 @@ console.log(programOptions)
 
 
 if (programOptions.listen) {
-  serverOption.port = programOptions.listen
+  serverOption.port = parseInt( programOptions.listen )
+}
+
+if (programOptions.listenCongport) {
+  serverOption.congPort = parseInt( programOptions.listenCongport )
 }
 
 if (programOptions.quota) {

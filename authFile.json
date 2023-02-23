@@ -1,0 +1,11 @@
+[
+  ["id","key","cid"],
+  ["device1","device1_key","device1_cid"],
+  ["view1","view1","view1"],
+  ["uno3","uno3-key","uno3-cid"],
+  ["remo","remo","remo"],
+  ["screen","screen","screen"],
+  ["id_max8","no_key_size_limit","communication_id"]
+]
+
+

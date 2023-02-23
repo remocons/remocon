@@ -1,41 +1,43 @@
 # remocon ( remote-signal console )
 
-- CLI: remote-signal server and client.
-- It use [remote-signal](https://www.npmjs.com/package/remote-signal) package.
+This is a remote-signal server and client CLI program. 
+
+This program use [remote-signal](https://www.npmjs.com/package/remote-signal) library.
 
 
 ## install
 
-```
-# sudo npm install -g remocon
+```sh
+$ sudo npm install -g remocon
+# global install.
 ```
 
 
 ## remote-signal server
 
-```js
-> remote-server // or  use 'remocons'  alias name
-// start server with default option.
-// open port 7777 with websocket. 
-// open port 8888 with congpacket/tcp. 
+```sh
+$ remote-server # or  use 'remocons'  alias
+# start server with default option.
+# default. open port 7777 with WebSocket. 
 
 
-> remocons -l 5555 
-// you can specify listen port number
+$ remocons -l 5555 
+# you can specify listen port number
 
 ```
 
 ## remote-signal client
 
 
-```js
-> remote // alias remocon
-// connect to localhost:7777 with websocket.
+```sh
+$ remote # or remocon alias
+# connect to localhost:7777 with websocket.
 
-> remote -c wss://websocket_url:port
-> remote -c ws://localhost:7777
-// define websocket url and port number.
-// support ws or wss(TLS).
+# use -c to define websocket url and port number.
+$ remote -c wss://websocket_server_url:port
+$ remote -c ws://localhost:7777
+
+# support ws or wss(TLS).
 
 ```
 
@@ -43,9 +45,8 @@
 
 - subscribe('tag')
 - publish('tag', message ) 
-- signal('tag', message )  //same with publish
-//  signal is alias of publish.
-- ...
+- signal('tag', message )  // same with publish
+- not ready whole document.
 
 ## tutorial 
 
@@ -55,39 +56,92 @@
 - uni-cast: use cid(communication id)
 
 1. start server
-```
-> remote-server
+```sh
+$ remote-server
+# or same below
+$ remocons 
 ```
 
 2. start client A.
 
-```js
-> remote
->> CID_ACK:  qosr7B0Z   // connected. receive cid.
+```sh
+$ remote
+Connecting to ws://localhost:7777
+ready:  cid: ?c3Nr 
+# connected and receive client cid.
+# CID(Communicaion Id of the remote client.)
 
-> .subscribe channel_name  // subscribe some channel
+> .subscribe channel_name  
+# subscribe some channel
 ```
 
 3. start client B.
-```js
-> remote
->> CID_ACK:  JjSim4JT   // connected. receive cid.
+```sh
+$ remote
+Connecting to ws://localhost:7777
+ready:  cid: ?rr75
+> 
+# connected and received cid.
 
-> .signal channel_name some_message   // multicast.
-> .signal qosr7B0Z@ direct_message  // unicast to A.
-// IMPORTANT. 
-// unicast signal tag must include '@' charactor.  
+# multicast.
+> .signal channel_name some_message   
+
+# unicast to A.
+> .signal ?c3Nr@ direct_message  
+# IMPORTANT. 
+# unicast signal tag must include '@' charactor.  tag = 'cid' + @
 ```
 
 ### authentication
-- when you have registered id and key.
 
+#### auth data from file.
+
+- for personal use only
+- raw plain password string. (Not Hashed)
+- each user have 3 values: deviceId, deviceKey, deviceCId
+- you can find sample authFile.json in root folder.
+```sh
+$ remocons -d authFile.json
+```
+
+authFile.json structure
+- deviceId string size limit: 8 charactors.
+- No passphrase string limit. (It will be digested 32bytes with sha256.)
+- CID string size limit: current 20 chars. can be changed.
 ```js
-> remocon
-> .login id password
+[
+  ["id","key","cid"],
+  ["did2","did2key","did2-cid"]
+  ["uno3","uno3-key","uno3-cid"]
+]
+```
 
-AUTHORIZED. TLS: false
->> CID_ACK:  uno   // now device have (pre-registered) cid.
+#### auth data from Redis(or DB)
+- Recommended
+- you can example source code from
+  - AuthRedis.js .. ( remocon/src )
+  - AuthCore.js ( remote-siganl/src/auth )
+
+start server with redis-auth-system
+```sh
+$ remote-server-redis
+```
+
+
+#### auth client
+1. auth server is ready
+2. when you have registered deviceId and key.
+
+```sh
+$ remote
+ready:  cid: ?YXDr
+> .login uno3 uno3-key
+try manual login:  uno3
+> >> QUOTA_LEVEL :  1
+current quota: {"signalSize":255,"publishCounter":10,"trafficRate":100000}
+ready:  cid: uno3-cid
+ 
+# now device have (pre-registered) CID.
 
 ```
 

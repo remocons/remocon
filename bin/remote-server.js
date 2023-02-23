@@ -4,11 +4,12 @@ import { RemoteServer, serverOption, AuthFile } from 'remote-signal'
 import { program } from 'commander'
 let authManager;
 
-const version = '0.2.0'
+const version = '0.6.0'
 program
   .version(version)
   .usage('[options] (--listen <port> )')
   .option('-l, --listen <port>', 'listen on port (start WebSocket Server)')
+  .option('-L, --listen-congport <port>', 'listen on cong port (start CongSocket Server)')
   .option('-t, --timeout <milliseconds>', 'ping period & timeout')
   .option('-d, --data-base <file>', 'load user data from file')
   .option('-m, --metric <type>', 'show metric <number> 1:traffic, 2:echo')
@@ -23,6 +24,10 @@ console.log(programOptions)
 
 if (programOptions.listen) {
   serverOption.port = programOptions.listen
+}
+
+if (programOptions.listenCongport) {
+  serverOption.congPort = parseInt( programOptions.listenCongport )
 }
 
 

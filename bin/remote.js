@@ -90,7 +90,7 @@ import { program } from 'commander'
 
 function noop () {}
 
-const version = '0.2.0'
+const version = '0.6.0'
 program
   .version(version)
   .usage('[options] (--connect <url> )')
