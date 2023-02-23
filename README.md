@@ -98,7 +98,7 @@ ready:  cid: ?rr75
 
 - for personal use only
 - raw plain password string. (Not Hashed)
-- each user have 3 values: deviceId, deviceKey, deviceCId
+- each device have 3 values: `deviceId`, `deviceKey`, `deviceCId`
 - you can find sample authFile.json in root folder.
 ```sh
 $ remocons -d authFile.json
@@ -108,6 +108,7 @@ authFile.json structure
 - deviceId string size limit: 8 charactors.
 - No passphrase string limit. (It will be digested 32bytes with sha256.)
 - CID string size limit: current 20 chars. can be changed.
+- JSON file does not support comment.
 ```js
 [
   ["id","key","cid"],
@@ -116,9 +117,9 @@ authFile.json structure
 ]
 ```
 
-#### auth data from Redis(or DB)
+#### auth data from Redis(or other DB)
 - Recommended
-- you can example source code from
+- you can find example source code from
   - AuthRedis.js .. ( remocon/src )
   - AuthCore.js ( remote-siganl/src/auth )
 
@@ -129,8 +130,8 @@ $ remote-server-redis
 
 
 #### auth client
-1. auth server is ready
-2. when you have registered deviceId and key.
+1. start auth server.
+2. connect and login
 
 ```sh
 $ remote
@@ -144,7 +145,4 @@ ready:  cid: uno3-cid
 # now device have (pre-registered) CID.
 
 ```
-
-
-
 
