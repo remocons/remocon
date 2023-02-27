@@ -1,8 +1,9 @@
 # remocon ( remote-signal console )
 
-This is a remote-signal server and client CLI program. 
+Remocon is a CLI program that makes it simple to run a remote-signal server and client. It uses the [remote-signal](https://www.npmjs.com/package/remote-signal)  library and uses Redis for authentication database functionality.
 
-This program use [remote-signal](https://www.npmjs.com/package/remote-signal) library.
+## supports 
+Windows, Mac, and Linux.
 
 
 ## install
@@ -94,7 +95,7 @@ ready:  cid: ?rr75
 
 ### authentication
 
-#### auth data from file.
+#### type1. auth data from file.
 
 - for personal use only
 - raw plain password string. (Not Hashed)
@@ -112,16 +113,18 @@ authFile.json structure
 ```js
 [
   ["id","key","cid"],
-  ["did2","did2key","did2-cid"]
+  ["did2","did2key","did2-cid"],
   ["uno3","uno3-key","uno3-cid"]
 ]
 ```
 
-#### auth data from Redis(or other DB)
+#### type2. auth data from Redis(or other DataBase)
 - Recommended
-- you can find example source code from
-  - AuthRedis.js .. ( remocon/src )
+- you can find example source here.
+  - AuthRedis.js , .. ( remocon/src )
   - AuthCore.js ( remote-siganl/src/auth )
+
+Before running the server, you need to make sure that your Redis server is up and running and that you have registered your device credentials. A simple credentials enrollment example is included in the source above.
 
 start server with redis-auth-system
 ```sh
@@ -146,3 +149,19 @@ ready:  cid: uno3-cid
 
 ```
 
+## Support for both web browsers and Arduino
+### Specifying two types of ports
+RemoteSignal uses websockets for web browser peer connections. If you want to use an Arduino connection, you must specify the use of the CongSocket port using the -L option.
+
+The -l option specifies the Websocket port, and the -L option specifies the CongSocket port for the Arduino.
+
+```sh
+
+$ remocons -l 7777 -L 8888
+# -l option for WebSocket port
+# -L option for CongSocket port ( Arduino connection)
+```
+
+### Remote Signal Arduino Library
+
+Search for `RemoteSignal` in the Arduino library manager and install it, or see the [`remote-signal-arduino`](https://github.com/congtrol/remote-signal-arduino) github repository
