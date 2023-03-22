@@ -5,7 +5,7 @@ import { AuthRedis } from '../src/AuthRedis.js';
 import { program } from 'commander'
 let authManager;
 
-const version = '0.8.0'
+const version = '0.9.0'
 program
   .version(version)
   .usage('[options] (--listen <port> )')
@@ -16,12 +16,18 @@ program
   .option('-m, --metric <type>', 'show metric <number> 1:oneline, 2: traffic 3:echo')
   .option('-s, --show-message <none|message|frame>', 'show receive message. ')
   .option('-p, --publish-address <url,ch>', 'publish local address to othe server.')
+  .option('-f, --file-logger', 'write log files.')
   .parse(process.argv)
 
 const programOptions = program.opts()
 
 console.log(programOptions)
 
+if (programOptions.fileLogger) {
+  serverOption.fileLogger.connection.use = true;
+  serverOption.fileLogger.auth.use = true;
+  serverOption.fileLogger.attack.use = true;
+}
 
 if (programOptions.listen) {
   serverOption.port = parseInt( programOptions.listen )

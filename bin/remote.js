@@ -90,7 +90,7 @@ import { program } from 'commander'
 
 function noop () {}
 
-const version = '0.8.0'
+const version = '0.9.0'
 program
   .version(version)
   .usage('[options] (--connect <url> )')
@@ -388,7 +388,7 @@ if ( !programOptions.connect) {
             // remocon.send( data )
           wsConsole.print(
             Console.Types.Error,
-            'command list: .sub .pub .sig .sig_bin .ping .pong .echo .iam .open .connect .close .hex .quit .exit',
+            'command list: .sub .subscribe .unsub .pub .publish .sig .signal .sig_bin .listen .ping .pong .id .iam .open .connect .close .quit .exit .login .auth',
             Console.Colors.Yellow
           )
       }
