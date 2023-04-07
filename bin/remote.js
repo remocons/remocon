@@ -292,19 +292,6 @@ if ( !programOptions.connect) {
           console.log(`channels: ${ chList.toString() }` )
           break;
 
-          
-        case 'listen':
-          toks.shift()
-          let tag = toks[0]
-          console.log('listen tag', tag)
-            remocon.listen( tag , (...args)=>{
-              console.log(`listen:  target: ${tag} args:`, args )
-              
-            })
-            remocon.subscribe_memory_channels()
-            break;
-
-
         case 'sig':
         case 'signal':
             toks.shift()
@@ -340,10 +327,22 @@ if ( !programOptions.connect) {
         case 'join':
         case 'sub':
         case 'subscribe':
+          // In the CLI program, the subscribe command is replaced by the listen command, otherwise you will not be able to see the incoming messages.
+          // toks.shift()
+          // remocon.subscribe( ...toks )
+          // break;
+        case 'listen':
           toks.shift()
-          remocon.subscribe( ...toks )
+          let tag = toks[0]
+          console.log('listen tag', tag)
+            remocon.listen( tag , (...args)=>{
+              console.log(`subscribe & listen  tag: ${tag} args:`, args )
+              
+            })
+          remocon.subscribe_memory_channels()
           break;
-                
+
+              
         case 'unsub':
           remocon.unsubscribe(toks[1]);
           break;
