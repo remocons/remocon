@@ -120,7 +120,7 @@ authFile.json structure
 
 #### type2. auth data from Redis(or other DataBase)
 - Recommended
-- you can find souce and examples here.
+- you can find source and examples here.
   - `remote-siganl` /src/boho_auth/
   - `remocon` /src/boho_auth_redis/
   - `remocon` /src/test_boho_auth_redis/
