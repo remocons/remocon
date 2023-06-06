@@ -1,6 +1,6 @@
-import {  AuthRedis } from './AuthRedis.js'
+import { BohoAuthRedis } from '../boho_auth_redis/BohoAuthRedis.js';
 
-let auth = new AuthRedis()
+let auth = new BohoAuthRedis()
   //addUSer(did,dey,cid,level)
     let addResult = await auth.addAuth('uno','uno','uno',1)
     let getResult = await auth.getAuth('uno')

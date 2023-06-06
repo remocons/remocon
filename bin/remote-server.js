@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
-import { RemoteServer, serverOption, AuthFile } from 'remote-signal'
+import { RemoteServer, serverOption, BohoAuth, BohoAuthFileDB } from 'remote-signal'
 import { program } from 'commander'
+import { version } from '../getVersion.js'
+
 let authManager;
 
-const version = '0.9.0'
 program
   .version(version)
   .usage('[options] (--listen <port> )')
@@ -39,7 +40,8 @@ if (programOptions.listenCongport) {
 
 if (programOptions.dataBase) {
   let authFilePath = programOptions.dataBase;
-  authManager = new AuthFile(authFilePath)
+
+  authManager = new BohoAuth( new BohoAuthFileDB( authFilePath) )
 }
 
 if (programOptions.showMessage) {

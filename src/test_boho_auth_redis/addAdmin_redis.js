@@ -1,6 +1,6 @@
-import {  AuthRedis } from './AuthRedis.js'
+import { BohoAuthRedis } from './BohoAuthRedis.js';
 
-let auth = new AuthRedis()
+let auth = new BohoAuthRedis()
   //addUSer(did,dkey,cid,level)
   if( process.argv.length != 5 ){
     console.log('=> $ node addAdmin.js id key cid')
@@ -13,7 +13,7 @@ let auth = new AuthRedis()
 
     let addResult = await auth.addAuth( did, dkey, cid ,255)
     let getResult = await auth.getAuth( did )
-    let saveResult = await auth.redis.save();
+    let saveResult = await auth.save();
 
     console.log('add',addResult )
     console.log('get',getResult)

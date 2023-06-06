@@ -5,6 +5,7 @@ import { EventEmitter } from 'events'
 import readline from 'readline'
 import tty from 'tty'
 import { program } from 'commander'
+import { version } from '../getVersion.js'
 
  class Console extends EventEmitter {
   constructor () {
@@ -90,7 +91,6 @@ import { program } from 'commander'
 
 function noop () {}
 
-const version = '0.9.0'
 program
   .version(version)
   .usage('[options] (--connect <url> )')
@@ -108,6 +108,7 @@ const programOptions = program.opts()
 
 
 console.log( programOptions )
+console.log( 'text message' )
 
 
 if ( !programOptions.connect) {  
@@ -226,6 +227,9 @@ if ( !programOptions.connect) {
         case 'auth':
           remocon.auth(toks[1], toks[2])
           break;
+        case 'tk':
+          remocon.send( 'tokenbase64string')
+          break;
         case 'encNo':
           remocon.encMode = ENC_MODE.NO 
           wsConsole.print(Console.Types.Incoming, `encMode: ${ENC_MODE[ remocon.encMode ] }`, Console.Colors.Green)
@@ -271,8 +275,12 @@ if ( !programOptions.connect) {
         case 'sudo':
           toks.shift()
           console.log('sudo toks', toks )
-          remocon.admin_request( ...toks ).then( result=>{
-            console.log('>> sudo response:', result )
+          remocon.requestSudo( ...toks ).then( res=>{
+            if(res.ok){
+              console.log('>> sudo response:', res.body )
+            }else{
+              console.log('>> sudo response:', res.body )
+            }
           }).catch(err=>{
             console.log('sudo call err',err)
           })
@@ -318,9 +326,19 @@ if ( !programOptions.connect) {
           break;
           
         case 'req':
-        case 'request':
-            remocon.request( toks[1] ).then( result=>{
+            toks.shift()
+            if(toks.length < 2){
+              wsConsole.print(
+                Console.Types.Error,
+                '[.req need at least two params]  req target command [, ..args]',
+                Console.Colors.Yellow
+                )
+              return
+            }
+            remocon.req( ...toks ).then( result=>{
               console.log('>> response:', result )
+            }).catch(e=>{
+              console.log(e)
             })
           break;
 
@@ -384,16 +402,15 @@ if ( !programOptions.connect) {
         case 'exit':
             process.exit();
         default:
-            // remocon.send( data )
           wsConsole.print(
             Console.Types.Error,
             'command list: .sub .subscribe .unsub .pub .publish .sig .signal .sig_bin .listen .ping .pong .id .iam .open .connect .close .quit .exit .login .auth',
             Console.Colors.Yellow
-          )
-      }
+            )
+          }
     } else {
-      
-
+     // text no .dot prefix   
+        remocon.send( data )
     }
     wsConsole.prompt()
   })

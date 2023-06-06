@@ -1,6 +1,8 @@
-import {  AuthRedis } from './AuthRedis.js'
+import { BohoAuthRedis } from './BohoAuthRedis.js';
 
-let auth = new AuthRedis()
+// node filename base_id level number
+// node uno 1 100
+let auth = new BohoAuthRedis()
   //addUSer(did,dey,cid,level)
   let baseId = process.argv[2] ? process.argv[2] : 'uno'
   let level = process.argv[3] ? process.argv[3] : 1;
@@ -12,15 +14,8 @@ let auth = new AuthRedis()
     let addResult = await auth.addAuth( id, id, id ,level)
     console.log('add',addResult )
   }
-    // let getResult = await auth.getAuth('uno')
-    // let wrongResult = await auth.getAuth('noid')
-
-    // console.log('get',getResult)
-    // console.log('data.key',getResult.key)
-    // console.log('wrongResult',wrongResult)
-    // console.log('wrongResult.key',wrongResult?.key)
-
-    await auth.redis.save();
+  
+    await auth.save();
 
     process.exit()
 
