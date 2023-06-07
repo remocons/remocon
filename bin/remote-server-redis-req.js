@@ -4,7 +4,7 @@ import { RemoteServer, serverOption , BohoAuth ,RequestHandler, ReplyHandler  } 
 import { BohoAuthRedis } from '../src/boho_auth_redis/BohoAuthRedis.js'
 import { RedisHandler } from '../src/req_handlers/RedisHandler.js'
 import { program } from 'commander'
-import { version } from '../getVersion.js'
+import { version } from './getVersion.js'
 
 program
   .version(version)

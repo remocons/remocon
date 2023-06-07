@@ -5,7 +5,7 @@ import { EventEmitter } from 'events'
 import readline from 'readline'
 import tty from 'tty'
 import { program } from 'commander'
-import { version } from '../getVersion.js'
+import { version } from './getVersion.js'
 
  class Console extends EventEmitter {
   constructor () {
