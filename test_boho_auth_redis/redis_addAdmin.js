@@ -1,6 +1,7 @@
-import { BohoAuthRedis } from './BohoAuthRedis.js';
+import { BohoAuthRedis } from 'remote-signal'
+import { redisClient } from './redisClient.js';
 
-let auth = new BohoAuthRedis()
+let auth = new BohoAuthRedis( redisClient)
   //addUSer(did,dkey,cid,level)
   if( process.argv.length != 5 ){
     console.log('=> $ node addAdmin.js id key cid')

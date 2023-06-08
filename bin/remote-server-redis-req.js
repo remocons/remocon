@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-
-import { RemoteServer, serverOption , BohoAuth ,RequestHandler, ReplyHandler  } from 'remote-signal'
-import { BohoAuthRedis } from '../src/boho_auth_redis/BohoAuthRedis.js'
-import { RedisHandler } from '../src/req_handlers/RedisHandler.js'
+import { 
+  RemoteServer, serverOption , BohoAuth , RequestHandler, 
+  ReplyHandler ,BohoAuthRedis, RedisHandler
+} from 'remote-signal'
+import { redisClient } from './redisClient.js';
 import { program } from 'commander'
 import { version } from './getVersion.js'
 
@@ -73,8 +74,8 @@ if (programOptions.timeout) {
   serverOption.timeout = programOptions.timeout
 }
 
-let authManager = new BohoAuth( new BohoAuthRedis() )
-let reqHandler = new RequestHandler( new ReplyHandler(), new RedisHandler() )
+let authManager = new BohoAuth( new BohoAuthRedis( redisClient) )
+let reqHandler = new RequestHandler( new ReplyHandler(), new RedisHandler( null, redisClient) )
 const remoteServer = new RemoteServer(serverOption, authManager, reqHandler)
 
 console.log('ServerOptions:', serverOption)

@@ -121,9 +121,8 @@ authFile.json structure
 #### type2. auth data from Redis(or other DataBase)
 - Recommended
 - you can find source and examples here.
-  - `remote-siganl` /src/boho_auth/
-  - `remocon` /src/boho_auth_redis/
-  - `remocon` /src/test_boho_auth_redis/
+  - `remote-siganl` "/src/boho_auth/" , "/src/boho_auth_redis/"
+  - `remocon` "/test_boho_auth_redis/"
 
 Before running the server, you need to make sure that your Redis server is up and running and that you have registered your device credentials. A simple credentials enrollment example is included in the source above.
 
