@@ -390,7 +390,6 @@ wsConsole.on('line', (data) => {
         )
     }
   } else {
-    remocon.send(data)
   }
   wsConsole.prompt()
 })
