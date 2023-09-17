@@ -58,8 +58,8 @@ class Console extends EventEmitter {
     if (tty.isatty(1)) {
       this.clear()
 
-      // if (programOptions.execute) color = type = '';
-      // else if (!programOptions.color) color = '';
+      // if (options.execute) color = type = '';
+      // else if (!options.color) color = '';
 
       this.stdout.write(color + type + msg + Console.Colors.Default + '\n')
       this.prompt()
@@ -103,22 +103,22 @@ program
   .option('-n, --nick <nickName>', 'use nick name')
   .parse(process.argv)
 
-const programOptions = program.opts()
+const options = program.opts()
 
 
 
-console.log(programOptions)
+console.log(options)
 console.log('text message')
 
 
-if (!programOptions.connect) {
-  programOptions.connect = 'localhost:' + serverOption.port;
+if (!options.connect) {
+  options.connect = 'localhost:' + serverOption.port;
 }
 
 
 const wsConsole = new Console()
 
-let connectUrl = programOptions.connect
+let connectUrl = options.connect
 // console.log('connectUrl raw', connectUrl )
 
 let remocon;
@@ -138,14 +138,14 @@ remocon.listen('@', (...args) => {
   console.log('rcv @', args)
 })
 
-if (programOptions.joinChannel) {
-  console.log('options joinchannel', programOptions.joinChannel)
-  remocon.channels.add(programOptions.joinChannel)
+if (options.joinChannel) {
+  console.log('options joinchannel', options.joinChannel)
+  remocon.channels.add(options.joinChannel)
 
 }
 
-if (programOptions.nick) {
-  remocon.nick = programOptions.nick
+if (options.nick) {
+  remocon.nick = options.nick
 }
 
 

@@ -1,8 +1,8 @@
-import { BohoAuthRedis } from 'remote-signal'
+import { BohoAuth_Redis } from 'remote-signal'
 import { redisClient } from './redisClient.js';
 
 
-let auth = new BohoAuthRedis( redisClient)
+let auth = new BohoAuth_Redis( redisClient)
   //addUSer(did,dey,cid,level)
     let addResult = await auth.addAuth('uno','uno','uno',1)
     let getResult = await auth.getAuth('uno')

@@ -1,7 +1,7 @@
-import { RemoteServer, serverOption, BohoAuth , BohoAuthRedis } from 'remote-signal'
+import { RemoteServer, serverOption , BohoAuth_Redis } from 'remote-signal'
 import { redisClient } from './redisClient.js';
 
-let authManager = new BohoAuth( new BohoAuthRedis( redisClient ) )
+let authManager = new BohoAuth_Redis( redisClient )
 serverOption.showMessage = 'message';
 const rs = new RemoteServer( serverOption ,authManager  )
 console.log( 'serverOption:', serverOption )

@@ -59,7 +59,7 @@ $ remote -c ws://localhost:7777
 1. start server
 ```sh
 $ remote-server
-# or same below
+# or same alias
 $ remocons 
 ```
 
@@ -100,23 +100,40 @@ ready:  cid: ?rr75
 - for personal use only
 - raw plain password string. (Not Hashed)
 - each device have 3 values: `deviceId`, `deviceKey`, `deviceCId`
-- you can find sample authFile.json in root folder.
+- you can find sample auth_file.js and auth_file.json in root folder.
 ```sh
-$ remocons -d authFile.json
+$ remocons -d auth_file.json
+// or
+$ remocons -d auth_file.js
 ```
 
-authFile.json structure
+auth_file.json structure
 - deviceId string size limit: 8 charactors.
 - No passphrase string limit. (It will be digested 32bytes with sha256.)
 - CID string size limit: current 20 chars. can be changed.
 - JSON file does not support comment.
 ```js
 [
-  ["id","key","cid"],
-  ["did2","did2key","did2-cid"],
-  ["uno3","uno3-key","uno3-cid"]
+  ["id","key","cid",0],
+  ["did2","did2key","did2-cid",0],
+  ["uno3","uno3-key","uno3-cid",1]
 ]
 ```
+
+### auth_file.js 
+- JS file is support comments.
+
+```js
+// *.js file support comments.
+export const authInfo = [
+  // device id, key, communication id, level:Number
+  ["did","passowrd","cid",0],  
+  ["device1","device1_key","device1_cid",0],
+  ["uno","uno-key","uno",1]
+]
+```
+
+
 
 #### type2. auth data from Redis(or other DataBase)
 - Recommended

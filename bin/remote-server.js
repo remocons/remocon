@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { RemoteServer, serverOption, BohoAuth, BohoAuthFileDB } from 'remote-signal'
+import { RemoteServer, serverOption, BohoAuth_File } from 'remote-signal'
 import { program } from 'commander'
 import { version } from './getVersion.js'
 
@@ -19,46 +19,46 @@ program
   .option('-f, --file-logger', 'write log files.')
   .parse(process.argv)
 
-const programOptions = program.opts()
+const options = program.opts()
 
-console.log(programOptions)
+console.log(options)
 
-if (programOptions.fileLogger) {
+if (options.fileLogger) {
   serverOption.fileLogger.connection.use = true;
   serverOption.fileLogger.auth.use = true;
   serverOption.fileLogger.attack.use = true;
 }
 
-if (programOptions.listen) {
-  serverOption.port = programOptions.listen
+if (options.listen) {
+  serverOption.port = options.listen
 }
 
-if (programOptions.listenCongport) {
-  serverOption.congPort = parseInt( programOptions.listenCongport )
+if (options.listenCongport) {
+  serverOption.congPort = parseInt( options.listenCongport )
 }
 
 
-if (programOptions.dataBase) {
-  let authFilePath = programOptions.dataBase;
+if (options.dataBase) {
+  let authFilePath = options.dataBase;
 
-  authManager = new BohoAuth( new BohoAuthFileDB( authFilePath) )
+  authManager = new BohoAuth_File( authFilePath)
 }
 
-if (programOptions.showMessage) {
-  serverOption.showMessage = programOptions.showMessage
+if (options.showMessage) {
+  serverOption.showMessage = options.showMessage
 }
 
-if (programOptions.metric) {
-  serverOption.showMetric = programOptions.metric
+if (options.metric) {
+  serverOption.showMetric = options.metric
 }
 
-if (programOptions.timeout) {
-  serverOption.timeout = programOptions.timeout
+if (options.timeout) {
+  serverOption.timeout = options.timeout
 }
 
-if( programOptions.publishAddress ){
-  let url = programOptions.publishAddress.split(',')[0]
-  let ch = programOptions.publishAddress.split(',')[1]
+if( options.publishAddress ){
+  let url = options.publishAddress.split(',')[0]
+  let ch = options.publishAddress.split(',')[1]
   if( url && ch ){
     serverOption.publishLocalAddress = {
       use: true,
