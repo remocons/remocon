@@ -103,7 +103,7 @@ ready:  cid: ?rr75
 - you can find sample auth_file.js and auth_file.json in root folder.
 ```sh
 $ remocons -d auth_file.json
-// or
+   or
 $ remocons -d auth_file.js
 ```
 

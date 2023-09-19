@@ -100,15 +100,11 @@ program
   .option('-i, --id <id>', 'userId')
   .option('-k, --key <key>', 'userKey')
   .option('-j, --join-channel <channelName>', 'join to channel')
-  .option('-n, --nick <nickName>', 'use nick name')
   .parse(process.argv)
 
 const options = program.opts()
 
-
-
 console.log(options)
-console.log('text message')
 
 
 if (!options.connect) {
@@ -121,79 +117,78 @@ const wsConsole = new Console()
 let connectUrl = options.connect
 // console.log('connectUrl raw', connectUrl )
 
-let remocon;
+let remote;
 let defaultChannel = '#screen'
 
 if (connectUrl.indexOf('cong') === 0) {
   //use TCP connection
-  remocon = new RemoteCongSocket(connectUrl)
+  remote = new RemoteCongSocket(connectUrl)
 } else { // ws connection
   if (!connectUrl.match(/\w+:\/\/.*$/i)) {
     connectUrl = `ws://${connectUrl}`
   }
-  remocon = new Remote(connectUrl)
+  remote = new Remote(connectUrl)
+
+  if( options.id && options.key ){
+    remote.auth( options.id, options.key )
+  }
 }
 
-remocon.listen('@', (...args) => {
+
+remote.listen('@', (...args) => {
   console.log('rcv @', args)
 })
 
 if (options.joinChannel) {
   console.log('options joinchannel', options.joinChannel)
-  remocon.channels.add(options.joinChannel)
+  remote.channels.add(options.joinChannel)
 
 }
-
-if (options.nick) {
-  remocon.nick = options.nick
-}
-
-
 
 
 wsConsole.print(Console.Types.Control, `Connecting to ${connectUrl}`, Console.Colors.Yellow)
 
-remocon.on('@pong', (...data) => {
+remote.on('@pong', (...data) => {
   wsConsole.print(
     Console.Types.Control,
     `>> receive pong from ${data[0]}`,
     Console.Colors.Yellow)
 })
 
-remocon.on('ready', () => {
+remote.on('ready', () => {
   wsConsole.print(
     Console.Types.Control,
-    `ready:  cid: ${remocon.cid}`,
+    `ready:  cid: ${remote.cid}`,
     Console.Colors.Green)
 })
 
-remocon.on('close', () => {
+remote.on('close', () => {
   wsConsole.print(Console.Types.Control, `connection closed: `, Console.Colors.Yellow)
 })
 
 
-remocon.on('authorized', () => {
+remote.on('authorized', () => {
   wsConsole.print(
     Console.Types.Control,
-    `Boho authorized. TLS: ${remocon.TLS}`,
+    `Boho authorized. TLS: ${remote.TLS}`,
     Console.Colors.Yellow)
 })
 
-remocon.on('auth_fail', () => {
+remote.on('auth_fail', () => {
   wsConsole.print(
     Console.Types.Control,
     `Boho auth_fail.`,
     Console.Colors.Yellow)
 })
-remocon.on('over_size', () => {
+remote.on('over_size', () => {
   wsConsole.print(
     Console.Types.Control,
-    `OVER_SIZE: your signalSize limit is: ${remocon.quota.signalSize}`,
+    `OVER_SIZE: your signalSize limit is: ${remote.quota.signalSize}`,
     Console.Colors.Yellow)
 })
 
 
-remocon.on('message', (data, isBinary) => {
+remote.on('message', (data, isBinary) => {
 
   let moreBytesIndicator = ""
   if (isBinary) {
@@ -223,45 +218,45 @@ wsConsole.on('line', (data) => {
     switch (cmd) {
       case 'login':
         toks.shift()
-        remocon.login(...toks)
+        remote.login(...toks)
         break;
       case 'auth':
         toks.shift()
-        remocon.auth(...toks)
+        remote.auth(...toks)
         break;
 
       case 'encNo':
-        remocon.encMode = ENC_MODE.NO
-        wsConsole.print(Console.Types.Incoming, `encMode: ${ENC_MODE[remocon.encMode]}`, Console.Colors.Green)
+        remote.encMode = ENC_MODE.NO
+        wsConsole.print(Console.Types.Incoming, `encMode: ${ENC_MODE[remote.encMode]}`, Console.Colors.Green)
         break;
       case 'encYes':
-        remocon.encMode = ENC_MODE.YES
-        wsConsole.print(Console.Types.Incoming, `encMode: ${ENC_MODE[remocon.encMode]}`, Console.Colors.Green)
+        remote.encMode = ENC_MODE.YES
+        wsConsole.print(Console.Types.Incoming, `encMode: ${ENC_MODE[remote.encMode]}`, Console.Colors.Green)
         break;
       case 'encAuto':
-        remocon.encMode = ENC_MODE.AUTO
-        wsConsole.print(Console.Types.Incoming, `encMode: ${ENC_MODE[remocon.encMode]}`, Console.Colors.Green)
+        remote.encMode = ENC_MODE.AUTO
+        wsConsole.print(Console.Types.Incoming, `encMode: ${ENC_MODE[remote.encMode]}`, Console.Colors.Green)
         break;
       case 'encMode':
-        wsConsole.print(Console.Types.Incoming, `encMode: ${ENC_MODE[remocon.encMode]}`, Console.Colors.Green)
+        wsConsole.print(Console.Types.Incoming, `encMode: ${ENC_MODE[remote.encMode]}`, Console.Colors.Green)
         break;
 
       case 'echo':
-        remocon.echo(toks[1])
+        remote.echo(toks[1])
         break;
 
       case 'iam':
-        remocon.iam(toks[1])
+        remote.iam(toks[1])
         break;
 
       case 'id':
-        console.log(`cid: ${remocon.cid} level: ${remocon.level}`)
+        console.log(`cid: ${remote.cid} level: ${remote.level}`)
         break;
 
       case 'sudo':
         toks.shift()
         console.log('sudo toks', toks)
-        remocon.req('sudo', ...toks).then(res => {
+        remote.req('sudo', ...toks).then(res => {
           if (res.ok) {
             console.log('>> sudo response:', res.body)
           } else {
@@ -275,12 +270,12 @@ wsConsole.on('line', (data) => {
 
 
       case 'quota':
-        console.log(`quota: ${JSON.stringify(remocon.quota)}`)
+        console.log(`quota: ${JSON.stringify(remote.quota)}`)
         break;
 
       case 'ch':
         let chList = []
-        remocon.channels.forEach(v => {
+        remote.channels.forEach(v => {
           chList.push(v)
         })
         console.log(`channels: ${chList.toString()}`)
@@ -289,7 +284,7 @@ wsConsole.on('line', (data) => {
       case 'sig':
       case 'signal':
         toks.shift()
-        remocon.signal(...toks)
+        remote.signal(...toks)
         break;
 
       case 'sig_bin':
@@ -297,17 +292,17 @@ wsConsole.on('line', (data) => {
         let to = toks[0]
         let size = parseInt(toks[1])
         console.log(`signal tag: ${to} size: ${size}`)
-        remocon.signal(to, new Uint8Array(size))
+        remote.signal(to, new Uint8Array(size))
         break;
 
       case 'pub':
       case 'publish':
         toks.shift()
-        remocon.publish(...toks)
+        remote.publish(...toks)
         break;
 
       case 'set':
-        remocon.set(toks[1])
+        remote.set(toks[1])
         break;
 
       case 'req':
@@ -320,7 +315,7 @@ wsConsole.on('line', (data) => {
           )
           return
         }
-        remocon.req(...toks).then(result => {
+        remote.req(...toks).then(result => {
           console.log('>> response:', result)
         }).catch(e => {
           console.log(e)
@@ -334,31 +329,31 @@ wsConsole.on('line', (data) => {
         toks.shift()
         let tag = toks[0]
         console.log('listen tag', tag)
-        remocon.listen(tag, (...args) => {
+        remote.listen(tag, (...args) => {
           console.log(`subscribe & listen  tag: ${tag} args:`, args)
 
         })
-        remocon.subscribe_memory_channels()
+        remote.subscribe_memory_channels()
         break;
 
 
       case 'unsub':
-        remocon.unsubscribe(toks[1]);
+        remote.unsubscribe(toks[1]);
         break;
 
       case 'pping':
-        remocon.signal(toks[1] + "@ping", remocon.cid)
+        remote.signal(toks[1] + "@ping", remote.cid)
         break;
       case 'ping':
-        remocon.ping()
+        remote.ping()
         break;
 
       case 'pong':
-        remocon.pong()
+        remote.pong()
         break
 
       case 'close':
-        remocon.close()
+        remote.close()
         break
 
       case 'open':
@@ -368,9 +363,9 @@ wsConsole.on('line', (data) => {
           if (!url.match(/\w+:\/\/.*$/i)) {
             url = `ws://${url}`
           }
-          remocon.connect(url) // new url
+          remote.open(url) // new url
         } else {
-          remocon.connect()  // last url
+          remote.open()  // last url
         }
         break
       case 'show':

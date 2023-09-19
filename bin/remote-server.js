@@ -1,27 +1,30 @@
 #!/usr/bin/env node
 
-import { RemoteServer, serverOption, BohoAuth_File } from 'remote-signal'
+import { RemoteServer, serverOption, BohoAuth_File, BohoAuth_Redis, BohoAuth_Remote,
+  api_reply ,api_sudo , RedisAPI
+} from 'remote-signal'
+import { redisClient } from './redisClient.js';
 import { program } from 'commander'
 import { version } from './getVersion.js'
-
-let authManager;
 
 program
   .version(version)
   .usage('[options] (--listen <port> )')
   .option('-l, --listen <port>', 'listen on port (start WebSocket Server)')
   .option('-L, --listen-congport <port>', 'listen on cong port (start CongSocket Server)')
+  .option('-d, --auth-file <path>', 'auth data file path')
+  .option('-r, --auth-redis', 'connect to redis. if exist use env REDIS_HOST, REDIS_PORT or localhost:6379')
+  .option('-R, --auth-remote <path>', 'remote auth server credential file path')
   .option('-t, --timeout <milliseconds>', 'ping period & timeout')
-  .option('-d, --data-base <file>', 'load user data from file')
   .option('-m, --metric <type>', 'show metric <number> 1:traffic, 2:echo')
   .option('-s, --show-message <none|message|frame>', 'show receive message. ')
-  .option('-p, --publish-address <url,ch>', 'publish local address to othe server.')
   .option('-f, --file-logger', 'write log files.')
+  .option('-a, --api-list [list...]', 'one or multiple api names:  -a api_1 api_2 ')
+  .option('-o, --show-options', 'show server init options.')
   .parse(process.argv)
 
 const options = program.opts()
 
-console.log(options)
 
 if (options.fileLogger) {
   serverOption.fileLogger.connection.use = true;
@@ -37,13 +40,6 @@ if (options.listenCongport) {
   serverOption.congPort = parseInt( options.listenCongport )
 }
 
-
-if (options.dataBase) {
-  let authFilePath = options.dataBase;
-
-  authManager = new BohoAuth_File( authFilePath)
-}
-
 if (options.showMessage) {
   serverOption.showMessage = options.showMessage
 }
@@ -56,24 +52,40 @@ if (options.timeout) {
   serverOption.timeout = options.timeout
 }
 
-if( options.publishAddress ){
-  let url = options.publishAddress.split(',')[0]
-  let ch = options.publishAddress.split(',')[1]
-  if( url && ch ){
-    serverOption.publishLocalAddress = {
-      use: true,
-      url: url,
-      ch: ch
-    }
-  }else{
-    console.log('[ use url(comma)ch ]  -p wss://url,channel ')
-  }
+
+let authManager;
+
+if (options.authRemote ) {
+  console.log("auth data origin: remote server")
+  authManager = new BohoAuth_Remote( options.authRemote )
+}else if(options.authFile ){
+  console.log("auth data origin: auth_file")
+  let authFilePath = options.authFile;
+  authManager = new BohoAuth_File( authFilePath)
+}else if(options.authRedis ){
+  console.log("auth data origin: redis")
+  authManager = new BohoAuth_Redis( redisClient )
+}else{
+  console.log("No authentication support.")
+
 }
 
 
 const remoteServer = new RemoteServer(serverOption, authManager)
 
-console.log('ServerOptions:', serverOption)
+if( options.apiList && options.apiList.length > 0  ){
+  let apiList = options.apiList
+  console.log('api list', apiList)
+  if( apiList.includes('reply')) remoteServer.api( 'reply', api_reply )
+  if( apiList.includes('sudo')) remoteServer.api( 'sudo', api_sudo )
+  if( apiList.includes('redis')) remoteServer.api( 'redis', new RedisAPI( redisClient ) )
+  
+}
+
+if( options.showOptions ){
+  console.log('ServerOptions:', serverOption)
+  console.log('server api list', remoteServer.apiNames )
+}
 
 
 
