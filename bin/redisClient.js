@@ -9,7 +9,7 @@ if( process.env.REDIS_HOST && process.env.REDIS_PORT ){
         url: url
     });
 }else{
-    console.log('####### default redis server url: redis://localhost:6379 ' )   
+    // console.log('####### default redis server url: redis://localhost:6379 ' )   
     redisClient = createClient();
 }
 

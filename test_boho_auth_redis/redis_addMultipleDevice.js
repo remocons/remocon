@@ -1,5 +1,5 @@
 import { BohoAuth_Redis } from 'remote-signal'
-import { redisClient } from './redisClient.js';
+import { redisClient } from '../bin/redisClient.js';
 
 // node filename base_id level number
 // node uno 1 10

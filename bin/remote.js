@@ -118,7 +118,7 @@ let connectUrl = options.connect
 // console.log('connectUrl raw', connectUrl )
 
 let remote;
-let defaultChannel = '#screen'
+
 
 if (connectUrl.indexOf('cong') === 0) {
   //use TCP connection
@@ -305,6 +305,7 @@ wsConsole.on('line', (data) => {
         remote.set(toks[1])
         break;
 
+      case 'api':
       case 'req':
         toks.shift()
         if (toks.length < 2) {

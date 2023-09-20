@@ -1,6 +1,6 @@
 {
   "name": "remocon",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "description": "remote-signal server and client.",
   "type": "module",
   "bin": {
