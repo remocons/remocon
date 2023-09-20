@@ -1,20 +1,16 @@
 {
   "name": "remocon",
-  "version": "0.17.1",
+  "version": "0.17.2",
   "description": "remote-signal server and client.",
   "type": "module",
   "bin": {
     "remote-server": "./bin/remote-server.js",
     "remocons": "./bin/remote-server.js",
-    
     "remote-server-redis": "./bin/remote-server-redis.js",
     "remocons-redis": "./bin/remote-server-redis.js",
-
     "rss": "./bin/remote-server-redis-req.js",
-
     "remote": "./bin/remote.js",
     "remocon": "./bin/remote.js"
-    
   },
   "engines": {
     "node": ">=15.2.0"
@@ -32,6 +28,6 @@
     "commander": "^11.0.0",
     "meta-buffer-pack": "^1.3.0",
     "redis": "^4.5.0",
-    "remote-signal": "^0.16.0"
+    "remote-signal": "^0.17.0"
   }
 }
