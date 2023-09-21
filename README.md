@@ -100,11 +100,11 @@ ready:  cid: ?rr75
 - for personal use only
 - raw plain password string. (Not Hashed)
 - each device have 3 values: `deviceId`, `deviceKey`, `deviceCId`
-- you can find sample auth_file.js and auth_file.json in root folder.
+- you can find sample auth_file.mjs and auth_file.json in root folder.
 ```sh
 $ remocons -d auth_file.json
    or
-$ remocons -d auth_file.js
+$ remocons -d auth_file.mjs
 ```
 
 auth_file.json structure
@@ -120,11 +120,11 @@ auth_file.json structure
 ]
 ```
 
-### auth_file.js 
-- JS file is support comments.
+### auth_file.mjs 
+- support comments.
 
 ```js
-// *.js file support comments.
+// *.mjs file support comments.
 export const authInfo = [
   // device id, key, communication id, level:Number
   ["did","passowrd","cid",0],  
