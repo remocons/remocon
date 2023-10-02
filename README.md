@@ -181,4 +181,4 @@ $ remocons -l 7777 -L 8888
 
 ### Remote Signal Arduino Library
 
-Search for `RemoteSignal` in the Arduino library manager and install it, or see the [`remote-signal-arduino`](https://github.com/congtrol/remote-signal-arduino) github repository
+Search for `RemoteSignal` in the Arduino library manager and install it, or see the [`remote-signal-arduino`](https://github.com/remocons/remote-signal-arduino) github repository
