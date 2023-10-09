@@ -64,6 +64,7 @@ if (options.authRemote ) {
   authManager = new BohoAuth_File( authFilePath)
 }else if(options.authRedis ){
   console.log("auth data origin: redis")
+  redisClient.connect();
   authManager = new BohoAuth_Redis( redisClient )
 }else{
   console.log("No authentication support.")

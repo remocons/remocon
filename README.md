@@ -7,9 +7,14 @@ Windows, Mac, and Linux.
 
 
 ## install
-
+Linux, Mac and shell
 ```sh
 $ sudo npm install -g remocon
+# global install.
+```
+windows as root permission
+```sh
+$ npm install -g remocon
 # global install.
 ```
 
@@ -22,7 +27,7 @@ $ remote-server # or  use 'remocons'  alias
 # default. open port 7777 with WebSocket. 
 
 
-$ remocons -l 5555 
+$ remote-server -l 5555 
 # you can specify listen port number
 
 ```
@@ -102,9 +107,9 @@ ready:  cid: ?rr75
 - each device have 3 values: `deviceId`, `deviceKey`, `deviceCId`
 - you can find sample auth_file.mjs and auth_file.json in root folder.
 ```sh
-$ remocons -d auth_file.json
+$ remote-server -d auth_file.json
    or
-$ remocons -d auth_file.mjs
+$ remote-server -d auth_file.mjs
 ```
 
 auth_file.json structure
@@ -126,9 +131,10 @@ auth_file.json structure
 ```js
 // *.mjs file support comments.
 export const authInfo = [
-  // device id, key, communication id, level:Number
+  // device id, key, communication id, level:Number(0~255)
   ["did","passowrd","cid",0],  
   ["device1","device1_key","device1_cid",0],
+  ["root","root-key","root-cid",255],  // default admin_root level is 255
   ["uno","uno-key","uno",1]
 ]
 ```
@@ -143,9 +149,9 @@ export const authInfo = [
 
 Before running the server, you need to make sure that your Redis server is up and running and that you have registered your device credentials. A simple credentials enrollment example is included in the source above.
 
-start server with redis-auth-system
+start server with local redis-auth-system
 ```sh
-$ remote-server-redis
+$ remote-server -r   // connect to redis://localhost:6379
 ```
 
 
@@ -174,11 +180,11 @@ The -l option specifies the Websocket port, and the -L option specifies the Cong
 
 ```sh
 
-$ remocons -l 7777 -L 8888
+$ remote-server -l 7777 -L 8888
 # -l option for WebSocket port
 # -L option for CongSocket port ( Arduino connection)
 ```
 
 ### Remote Signal Arduino Library
 
-Search for `RemoteSignal` in the Arduino library manager and install it, or see the [`remote-signal-arduino`](https://github.com/remocons/remote-signal-arduino) github repository
+Search for `RemoteSignal` in the Arduino library manager and install it, or see the [`remote-signal-arduino`](https://github.com/congtrol/remote-signal-arduino) github repository
