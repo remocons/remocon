@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { RemoteServer, serverOption, BohoAuth_File, BohoAuth_Redis, BohoAuth_Remote,
+import { RemoteServer, serverOption, BohoAuth_File, BohoAuth_Redis,
   api_reply ,api_sudo , RedisAPI
 } from 'remote-signal'
-import { redisClient } from './redisClient.js';
+import { createClient  } from 'redis';
 import { program } from 'commander'
 import { version } from './getVersion.js'
 
@@ -14,7 +14,6 @@ program
   .option('-L, --listen-congport <port>', 'listen on cong port (start CongSocket Server)')
   .option('-d, --auth-file <path>', 'auth data file path')
   .option('-r, --auth-redis', 'connect to redis. if exist use env REDIS_HOST, REDIS_PORT or localhost:6379')
-  .option('-R, --auth-remote <path>', 'remote auth server credential file path')
   .option('-t, --timeout <milliseconds>', 'ping period & timeout')
   .option('-m, --metric <type>', 'show metric <number> 1:traffic, 2:echo')
   .option('-s, --show-message <none|message|frame>', 'show receive message. ')
@@ -54,16 +53,17 @@ if (options.timeout) {
 
 
 let authManager;
+let redisClient;
 
-if (options.authRemote ) {
-  console.log("auth data origin: remote server")
-  authManager = new BohoAuth_Remote( options.authRemote )
-}else if(options.authFile ){
+if(options.authFile ){
   console.log("auth data origin: auth_file")
   let authFilePath = options.authFile;
   authManager = new BohoAuth_File( authFilePath)
 }else if(options.authRedis ){
   console.log("auth data origin: redis")
+  // console.log('####### default redis server url: redis://localhost:6379 ' )   
+  redisClient = createClient();
+  redisClient.on('error', (err) => console.log('Redis Client Error', err));
   redisClient.connect();
   authManager = new BohoAuth_Redis( redisClient )
 }else{

@@ -1,6 +1,6 @@
 {
   "name": "remocon",
-  "version": "0.20.0",
+  "version": "0.20.1",
   "description": "remote-signal server and client.",
   "type": "module",
   "bin": {
@@ -22,6 +22,6 @@
     "commander": "^11.0.0",
     "meta-buffer-pack": "^1.3.0",
     "redis": "^4.6.10",
-    "remote-signal": "^0.20.0"
+    "remote-signal": "^0.21.1"
   }
 }
