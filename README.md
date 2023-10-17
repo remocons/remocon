@@ -104,7 +104,7 @@ ready:  cid: ?rr75
 
 - for personal use only
 - raw plain password string. (Not Hashed)
-- each device have 3 values: `deviceId`, `deviceKey`, `deviceCId`
+- each device have 4 values: `deviceId`, `deviceKey`, `deviceCId`, `level`
 - you can find sample auth_file.mjs and auth_file.json in root folder.
 ```sh
 $ remote-server -d auth_file.json
@@ -144,14 +144,14 @@ export const authInfo = [
 #### type2. auth data from Redis(or other DataBase)
 - Recommended
 - you can find source and examples here.
-  - `remote-siganl` "/src/boho_auth/" , "/src/boho_auth_redis/"
-  - `remocon` "/test_boho_auth_redis/"
+  - `remote-siganl` "/src/auth/"
+  - `remocon` "/test_auth_redis/"
 
 Before running the server, you need to make sure that your Redis server is up and running and that you have registered your device credentials. A simple credentials enrollment example is included in the source above.
 
 start server with local redis-auth-system
 ```sh
-$ remote-server -r   // connect to redis://localhost:6379
+$ remote-server -r   //  redis://localhost:6379
 ```
 
 
@@ -187,4 +187,4 @@ $ remote-server -l 7777 -L 8888
 
 ### Remote Signal Arduino Library
 
-Search for `RemoteSignal` in the Arduino library manager and install it, or see the [`remote-signal-arduino`](https://github.com/congtrol/remote-signal-arduino) github repository
+Search for `RemoteSignal` in the Arduino library manager and install it, or see the [`remote-signal-arduino`](https://github.com/remocons/remote-signal-arduino) github repository

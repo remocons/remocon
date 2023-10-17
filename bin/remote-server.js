@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { RemoteServer, serverOption, BohoAuth_File, BohoAuth_Redis,
+import { RemoteServer, serverOption, Auth_File, Auth_Redis,
   api_reply ,api_sudo , RedisAPI
 } from 'remote-signal'
 import { createClient  } from 'redis';
@@ -58,14 +58,14 @@ let redisClient;
 if(options.authFile ){
   console.log("auth data origin: auth_file")
   let authFilePath = options.authFile;
-  authManager = new BohoAuth_File( authFilePath)
+  authManager = new Auth_File( authFilePath)
 }else if(options.authRedis ){
   console.log("auth data origin: redis")
   // console.log('####### default redis server url: redis://localhost:6379 ' )   
   redisClient = createClient();
   redisClient.on('error', (err) => console.log('Redis Client Error', err));
   redisClient.connect();
-  authManager = new BohoAuth_Redis( redisClient )
+  authManager = new Auth_Redis( redisClient )
 }else{
   console.log("No authentication support.")
 

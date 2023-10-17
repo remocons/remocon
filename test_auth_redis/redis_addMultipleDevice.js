@@ -1,11 +1,14 @@
-import { BohoAuth_Redis } from 'remote-signal'
-import { redisClient } from '../bin/redisClient.js';
+import { Auth_Redis } from 'remote-signal'
+import { createClient  } from 'redis';
+
+let redisClient = createClient();
+redisClient.on('error', (err) => console.log('Redis Client Error', err));
+redisClient.connect();
+
+let auth = new Auth_Redis( redisClient)
 
 // node filename base_id level number
 // node uno 1 10
-redisClient.connect();
-let auth = new BohoAuth_Redis( redisClient)
-
 //addUSer(did,dey,cid,level)
 let baseId = process.argv[2] ? process.argv[2] : 'uno'
 let level = process.argv[3] ? process.argv[3] : 1;
