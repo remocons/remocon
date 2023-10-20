@@ -163,7 +163,7 @@ remote.on('ready', () => {
 })
 
 remote.on('close', () => {
-  wsConsole.print(Console.Types.Control, `connection closed: `, Console.Colors.Yellow)
+  wsConsole.print(Console.Types.Control, `closed`, Console.Colors.Yellow)
 })
 
 
