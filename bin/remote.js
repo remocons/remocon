@@ -99,6 +99,7 @@ program
   .option('-c, --connect <url>', 'connect to a server')
   .option('-i, --id <id>', 'userId')
   .option('-k, --key <key>', 'userKey')
+  .option('-a, --auth-idKey <idkey>', 'auth id.key')
   .option('-j, --join-channel <channelName>', 'join to channel')
   .parse(process.argv)
 
@@ -128,10 +129,12 @@ if (connectUrl.indexOf('cong') === 0) {
     connectUrl = `ws://${connectUrl}`
   }
   remote = new Remote(connectUrl)
+}
 
-  if( options.id && options.key ){
-    remote.auth( options.id, options.key )
-  }
+if( options.id && options.key ){
+  remote.auth( options.id, options.key )
+}else if( options.authIdKey){
+  remote.auth( options.authIdKey )
 }
 
 
