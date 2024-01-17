@@ -1,6 +1,13 @@
 # remocon ( remote-signal console )
 
-Remocon is a CLI program that makes it simple to run a remote-signal server and client. It uses the [remote-signal](https://www.npmjs.com/package/remote-signal)  library and uses Redis for authentication database functionality.
+## NOTICE
+
+The package name has been changed to `iosignal-cli`. Please use the new library name.
+
+
+new github: [`iosignal-cli`](https://github.com/remocons/iosignal-cli)
+
+new npmjs: [`iosignal-cli`](https://www.npmjs.com/package/iosignal-cli)
 
 ## supports 
 Windows, Mac, and Linux.
@@ -185,6 +192,3 @@ $ remote-server -l 7777 -L 8888
 # -L option for CongSocket port ( Arduino connection)
 ```
 
-### Remote Signal Arduino Library
-
-Search for `RemoteSignal` in the Arduino library manager and install it, or see the [`remote-signal-arduino`](https://github.com/remocons/remote-signal-arduino) github repository
