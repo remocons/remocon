@@ -1,0 +1,13 @@
+{
+  "name": "remocon",
+  "version": "0.30.1",
+  "description": "test",
+  "type":"module",
+  "browser":"./dist/remocon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
