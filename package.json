@@ -4,7 +4,8 @@
   "description": "remcon test",
   "type": "module",
   "bin": {
-    "remocon": "./bin/remocon.js"
+    "remocon": "./bin/remocon.js",
+    "remote": "./bin/remote.js"
   },
   "author": {
     "name": "Taeo Lee",
@@ -15,7 +16,7 @@
     "boxen": "8.0.1",
     "chalk": "5.6.2",
     "commander": "13.1.0",
-    "iosignal": "^4.7.0",
+    "iosignal": "^5.1.4",
     "redis": "4.7.1"
   },
   "keywords": [
