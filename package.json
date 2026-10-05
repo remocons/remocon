@@ -4,8 +4,8 @@
   "description": "IOSignal one-shot, line input, key input and interactive CLI",
   "type": "module",
   "bin": {
-    "remocon": "./bin/remocon.js",
-    "remote": "./bin/remote.js"
+    "remocon": "bin/remocon.js",
+    "remote": "bin/remote.js"
   },
   "author": {
     "name": "Taeo Lee",
