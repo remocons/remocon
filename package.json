@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "commander": "13.1.0",
-    "iosignal": "^7.0.2"
+    "iosignal": "^7.1.0"
   },
   "keywords": [
     "websocket",

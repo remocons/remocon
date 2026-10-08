@@ -199,3 +199,15 @@ npm run sea:dist
 이 구현의 로컬 검증 대상은 macOS ARM64입니다. 다른 플랫폼의 CI 실행 및 라즈베리파이 실기기 검증은 별도로 필요합니다. Windows에서는 Unix SIGTERM 정리 테스트를 제외하며, 실제 콘솔의 Ctrl+C 동작은 실기기 검증 대상입니다.
 
 참고: [Node.js SEA 공식 문서](https://nodejs.org/docs/latest-v22.x/api/single-executable-applications.html)
+
+## 대화형 로그 표시
+
+대화형 프롬프트는 CID 대신 `›`를 사용합니다. 응답은 들여쓰고 수신 메시지,
+연결 상태, 오류를 구분합니다. 시간은 기본적으로 숨기며 `--timestamps`로 표시합니다.
+`NO_COLOR=1`로 색상을 끌 수 있습니다. 파이프 출력에는 장식이나 시간이 추가되지 않습니다.
+
+`ping`은 서버에, `ping <cid>`는 상대 장치에 요청합니다. `pping <cid>`는 별칭입니다.
+응답은 `pong` 또는 `pong (<cid>)`이며 3초 후 응답이 없으면 timeout을 표시합니다.
+CLI는 수신한 peer ping에 자동 응답하며 `hide` 설정에도 응답합니다.
+Node CLI는 기존 서버의 WebSocket 제어 PONG과 IOSignal PONG 패킷을 모두 처리합니다.
+브라우저 CLI의 기본 ping에는 서버의 IOSignal PONG 패킷 응답이 필요합니다.
