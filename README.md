@@ -1,12 +1,12 @@
 # remocon
 
-현재 npm 패키지 버전은 **7.1.0**이며 IOSignal 버전과 맞췄습니다. 기존 0.60.0에서 버전 번호를 7.1.0으로 변경했습니다. 서버·peer ping 처리와 CLI 로그 개선을 포함합니다.
+[한국어](README.md) | [English](README.en.md)
+
+remocon 패키지와 IOSignal 의존성의 버전은 **7.2.0**입니다. 서버·peer ping 처리와 대화형 로그 개선을 포함합니다.
 
 IOSignal 서버에 연결하여 단발 명령, 줄 단위 입력, 키 단위 입력, 대화형 명령을 실행합니다. Node.js 22.16.0 이상이 필요합니다.
 
 ## 설치와 실행
-
-Node.js 없이 실행하려면 [v0.60.0 다운로드](https://github.com/remocons/remocon/releases/tag/v0.60.0)에서 운영체제와 CPU에 맞는 파일을 받으세요. [설치 방법](packaging/sea/INSTALL.md)을 참고하세요.
 
 npm에 배포된 버전을 전역 설치하려면:
 
@@ -161,46 +161,6 @@ input demo
 `npm test`는 로컬 WebSocket/TCP 서버로 전송·인증·서비스 호출·EOF·대화형 명령을 검사하고, Node.js keypress 디코더에 입력 시퀀스를 주어 즉시 전송과 터미널 복원을 확인합니다. 외부 공개 서버는 테스트에 사용하지 않습니다.
 
 현재 작업에서는 macOS에서 자동 테스트와 실제 PTY의 키 즉시 전송·Ctrl+C·SIGTERM 후 터미널 복원을 검증했습니다. Windows·Linux 실기기 실행은 아직 검증하지 않았습니다.
-
-## Node.js 설치 없이 사용하는 SEA 배포
-
-독립 실행 파일을 다운로드하면 Node.js·npm 없이 사용할 수 있습니다. Windows x64/ARM64는 ZIP, macOS Intel/Apple Silicon과 Linux x64/ARM64는 tar.gz로 배포합니다. 라즈베리파이는 **64비트 OS용 Linux ARM64** 파일을 사용합니다.
-
-[플랫폼별 다운로드·설치 안내](packaging/sea/INSTALL.md)에 파일 선택, SHA256 확인, 압축 해제, PATH 등록, 업데이트·삭제 방법을 정리했습니다. 각 압축 파일 안에도 `INSTALL.md`가 들어 있습니다. GitHub Release를 공개하기 전에는 다운로드 페이지에 파일이 나타나지 않습니다.
-
-### 유지관리자의 빌드·검증
-
-SEA 빌드 런타임은 `packaging/sea/node-version`에 **22.23.3**으로 고정했습니다. 해당 Node.js를 설치·선택한 환경에서 실행합니다. 일반 npm CLI 사용 조건과 별개의 빌드 조건입니다.
-
-nvm을 사용하는 개발 환경에서는 먼저 `nvm install 22.23.3`과 `nvm use 22.23.3`을 실행합니다.
-
-```sh
-npm ci
-npm test
-npm run sea:dist
-```
-
-`sea:dist`는 `sea:build` → `sea:test` → `sea:package` 순서로 실행합니다.
-
-- esbuild로 의존성을 CommonJS 번들로 묶고 Node.js SEA blob을 생성합니다.
-- 동일한 Node.js 실행 파일에 postject로 blob을 삽입합니다. ws의 선택적 native addon 대신 JS 구현을 사용합니다.
-- `remocon`과 `remote` 독립 실행 파일, 문서·라이선스·빌드 정보를 만듭니다.
-- 임시 폴더로 복사하고 PATH에서 Node.js를 제거한 환경에서 도움말·버전 및 실제 WebSocket/TCP 통합 테스트를 실행합니다.
-- 현재 OS·CPU용 압축 파일과 `.sha256` 파일을 `dist/`에 생성합니다. 빌드 중간 파일 `.sea/`와 `dist/`는 Git에 커밋하지 않습니다.
-
-빌드는 현재 실행 중인 Node.js의 OS·CPU를 대상으로 합니다. Mac에서 명령 한 번으로 Windows 실행 파일까지 생성하는 방식이 아닙니다. 런타임에 포함된 Node.js를 업데이트하려면 `node-version`, 해당 버전의 공식 `LICENSE.node`, 문서의 버전을 함께 갱신하고 전체 대상을 다시 검증합니다.
-
-### GitHub Actions와 릴리스
-
-`.github/workflows/sea.yml`은 Windows x64/ARM64, macOS x64/ARM64, Linux x64/ARM64의 네이티브 러너에서 빌드·테스트합니다. Actions의 **SEA binaries → Run workflow**로 실행하면 플랫폼별 archive와 checksum을 artifact에서 받을 수 있습니다.
-
-버전을 확정한 후 `package.json`과 잠금 파일의 버전을 맞추고 `v<버전>` 태그를 푸시하면, 6개 대상이 모두 성공했을 때 실행 파일이 첨부된 **draft release**를 만듭니다. 자동 공개는 하지 않습니다. 태그가 패키지 버전과 다르면 실패합니다. 기존 릴리스가 있으면 덮어쓰지 않으므로 재실행 시 기존 draft를 확인하세요.
-
-기본 결과물은 Windows 게시자 미서명 / macOS ad-hoc 서명 상태입니다. 일반 사용자용 정식 배포에서 필요한 코드 서명·공증 및 그 이후 재패키징은 [설치 안내의 서명 설명](packaging/sea/INSTALL.md#서명과-배포-상태)을 참고하세요. 외부 서명 후에는 `npm run sea:test`와 `npm run sea:package`를 실행하며, `sea:build`는 서명 전 결과물을 다시 만들므로 실행하지 않습니다. 외부 서명을 적용했다면 `build-info.json`의 signing 정보도 갱신하세요.
-
-이 구현의 로컬 검증 대상은 macOS ARM64입니다. 다른 플랫폼의 CI 실행 및 라즈베리파이 실기기 검증은 별도로 필요합니다. Windows에서는 Unix SIGTERM 정리 테스트를 제외하며, 실제 콘솔의 Ctrl+C 동작은 실기기 검증 대상입니다.
-
-참고: [Node.js SEA 공식 문서](https://nodejs.org/docs/latest-v22.x/api/single-executable-applications.html)
 
 ## 대화형 로그 표시
 

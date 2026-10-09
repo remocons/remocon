@@ -1,6 +1,6 @@
 {
   "name": "remocon",
-  "version": "7.1.0",
+  "version": "7.2.0",
   "description": "IOSignal one-shot, line input, key input and interactive CLI",
   "type": "module",
   "bin": {
@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "commander": "13.1.0",
-    "iosignal": "^7.1.0"
+    "iosignal": "^7.2.0"
   },
   "keywords": [
     "websocket",
@@ -30,20 +30,12 @@
     "node": ">=22.16.0"
   },
   "scripts": {
-    "test": "node --test test/*.test.js",
-    "sea:build": "node scripts/build-sea.mjs",
-    "sea:test": "node scripts/test-sea.mjs",
-    "sea:package": "node scripts/package-sea.mjs",
-    "sea:dist": "npm run sea:build && npm run sea:test && npm run sea:package"
+    "test": "node --test test/*.test.js"
   },
   "files": [
     "bin/",
     "lib/",
     "README.md",
-    "packaging/sea/INSTALL.md"
-  ],
-  "devDependencies": {
-    "esbuild": "0.28.2",
-    "postject": "1.0.0-alpha.6"
-  }
+    "README.en.md"
+  ]
 }

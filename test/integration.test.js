@@ -1,7 +1,6 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { spawn } from 'node:child_process'
-import path from 'node:path'
 import { once } from 'node:events'
 import { setTimeout as delay } from 'node:timers/promises'
 import { Server, replyService, BohoAuth, StringKeyProvider } from 'iosignal'
@@ -13,12 +12,8 @@ async function until(check) {
   throw new Error('condition timed out')
 }
 function launch(t, args, input, binary = 'remocon') {
-  const directory = process.env.REMOCON_TEST_BIN_DIR
-  const executable = directory ? path.join(directory, binary + (process.platform === 'win32' ? '.exe' : '')) : process.execPath
-  const argv = directory ? args : [`bin/${binary}.js`, ...args]
-  const child = spawn(executable, argv, {
-    stdio: ['pipe','pipe','pipe'],
-    ...(directory ? { cwd: directory, env: { ...process.env, PATH: '', NODE_PATH: '', NODE_OPTIONS: '' } } : {})
+  const child = spawn(process.execPath, [`bin/${binary}.js`, ...args], {
+    stdio: ['pipe','pipe','pipe']
   })
   child.text = ''
   child.stdout.on('data', b => { child.text += b })
