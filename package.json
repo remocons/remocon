@@ -1,6 +1,6 @@
 {
   "name": "remocon",
-  "version": "7.2.0",
+  "version": "8.0.0",
   "description": "IOSignal one-shot, line input, key input and interactive CLI",
   "type": "module",
   "bin": {
