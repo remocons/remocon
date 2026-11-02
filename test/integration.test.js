@@ -24,7 +24,7 @@ function launch(t, args, input, binary = 'remocon') {
   return child
 }
 async function fixture(t, auth = false) {
-  const server = new Server({ port: 0, congPort: 0 }, auth ? new BohoAuth(new StringKeyProvider('uno.uno-key.uno.1')) : undefined)
+  const server = new Server({ port: 0, congPort: 0 }, auth ? new BohoAuth(new StringKeyProvider('uno.uno-key.uno')) : undefined)
   server.attach('reply', replyService)
   await once(server, 'ready')
   t.after(() => new Promise(resolve => server.close(resolve)))

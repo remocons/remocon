@@ -2,7 +2,7 @@
 
 [한국어](README.md) | [English](README.en.md)
 
-remocon 패키지와 IOSignal 의존성의 버전은 **7.2.0**입니다. 서버·peer ping 처리와 대화형 로그 개선을 포함합니다.
+remocon 패키지와 IOSignal 의존성의 버전은 **9.0.0**입니다. 서버·peer ping 처리와 대화형 로그 개선을 포함합니다.
 
 IOSignal 서버에 연결하여 단발 명령, 줄 단위 입력, 키 단위 입력, 대화형 명령을 실행합니다. Node.js 22.16.0 이상이 필요합니다.
 

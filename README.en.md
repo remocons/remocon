@@ -2,7 +2,7 @@
 
 [한국어](README.md) | [English](README.en.md)
 
-The remocon package and its IOSignal dependency use version **7.2.0**. The CLI includes server and peer ping handling and improved interactive logs.
+The remocon package and its IOSignal dependency use version **9.0.0**. The CLI includes server and peer ping handling and improved interactive logs.
 
 Connect to an IOSignal server to run one-shot commands, line input, key input, or interactive commands. Requires Node.js 22.16.0 or later.
 
