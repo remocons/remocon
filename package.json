@@ -1,6 +1,6 @@
 {
   "name": "remocon",
-  "version": "9.0.0",
+  "version": "9.6.0",
   "description": "IOSignal one-shot, line input, key input and interactive CLI",
   "type": "module",
   "bin": {
@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "commander": "13.1.0",
-    "iosignal": "^9.0.0"
+    "iosignal": "^9.6.0"
   },
   "keywords": [
     "websocket",
