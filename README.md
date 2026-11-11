@@ -2,7 +2,7 @@
 
 [한국어](README.md) | [English](README.en.md)
 
-remocon 패키지와 IOSignal 의존성의 버전은 **9.6.0**입니다. 9.6.0은 코드 변경 없이 IOSignal 9.6.0과 버전을 맞춘 릴리스입니다. 서버·peer ping 처리와 대화형 로그 개선을 포함합니다.
+remocon 패키지와 IOSignal 의존성의 버전은 **9.12.0**입니다. 9.12.0은 IOSignal 9.12.0과 버전을 맞춘 릴리스로, 접속할 때마다 `iam('remocon-cli')`로 모니터에 보일 연결 이름을 알립니다. 서버·peer ping 처리와 대화형 로그 개선을 포함합니다.
 
 IOSignal 서버에 연결하여 단발 명령, 줄 단위 입력, 키 단위 입력, 대화형 명령을 실행합니다. Node.js 22.16.0 이상이 필요합니다.
 

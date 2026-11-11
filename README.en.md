@@ -2,7 +2,7 @@
 
 [한국어](README.md) | [English](README.en.md)
 
-The remocon package and its IOSignal dependency use version **9.6.0**. 9.6.0 has no code changes; it matches the IOSignal 9.6.0 release. The CLI includes server and peer ping handling and improved interactive logs.
+The remocon package and its IOSignal dependency use version **9.12.0**. 9.12.0 matches the IOSignal 9.12.0 release; the CLI names its connection with `iam('remocon-cli')` on every ready, so monitors show it. The CLI includes server and peer ping handling and improved interactive logs.
 
 Connect to an IOSignal server to run one-shot commands, line input, key input, or interactive commands. Requires Node.js 22.16.0 or later.
 
