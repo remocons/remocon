@@ -140,7 +140,7 @@ test('console server/peer ping and alias work while hidden; pipes stay plain', {
     const child = launch(t, ['-c',address,'--timestamps','console'], `hide\nping\nping ${subscriber.io.cid}\npping ${subscriber.io.cid}\nquit\n`)
     assert.equal(await child.done, 0, child.text)
     assert.equal(child.text.split(`pong (${subscriber.io.cid})`).length, 3)
-    assert.match(child.text, /^pong$/m)
+    assert.match(child.text, /^pong \d+ ms$/m)
     assert.doesNotMatch(child.text, /\x1b|\d{2}:\d{2}:\d{2}|CID Message|ready:|›/)
   }
 })

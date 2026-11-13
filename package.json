@@ -30,7 +30,8 @@
     "node": ">=22.16.0"
   },
   "scripts": {
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "sync:cli": "node scripts/sync-cli.mjs"
   },
   "files": [
     "bin/",
